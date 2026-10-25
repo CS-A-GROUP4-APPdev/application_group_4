@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from .managers import ParentLinkManager, StudentManager
+
 
 class User(AbstractUser):
     """Custom user with a role. Every account in Gabay has exactly one role."""
@@ -32,6 +34,8 @@ class Student(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    objects = StudentManager()
+
     class Meta:
         ordering = ["grade_level", "section", "last_name", "first_name"]
 
@@ -51,6 +55,8 @@ class ParentLink(models.Model):
     consent_given = models.BooleanField(default=False)
     consent_date = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = ParentLinkManager()
 
     class Meta:
         constraints = [

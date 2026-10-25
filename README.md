@@ -37,3 +37,21 @@ python manage.py test
 - `User`: custom user with a role (parent, student, teacher, adviser, principal, admin)
 - `Student`: LRN, name, grade level, section
 - `ParentLink`: links a parent to a student with relationship and consent
+
+## Stored procedure and function (PostgreSQL)
+Created by `users/migrations/0002_stored_procedures.py`:
+- `sp_link_parent(parent_id, student_id, relationship, consent)` PROCEDURE: checks the user is a parent and the student exists, then inserts or updates the parent link.
+- `fn_students_of_parent(parent_id)` FUNCTION: returns only the students a parent may see (consent must be given).
+
+Views call them through `ParentLink.objects.link_parent(...)` and `Student.objects.for_parent(...)` (`users/managers.py`). On SQLite the same methods use the ORM instead.
+
+### Run with PostgreSQL
+```
+createdb gabay            # or create the database in pgAdmin
+set DB_ENGINE=postgres    # Windows (use export on macOS/Linux)
+set DB_NAME=gabay
+set DB_USER=gabay
+set DB_PASSWORD=gabay
+python manage.py migrate
+python manage.py test
+```

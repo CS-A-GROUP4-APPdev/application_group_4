@@ -1,3 +1,4 @@
+
 # Gabay: Student Progress and Attendance Monitoring System
 
 Backend built with Python, Django, and Django REST Framework.
@@ -55,3 +56,6 @@ set DB_PASSWORD=gabay
 python manage.py migrate
 python manage.py test
 ```
+
+# application_group_4
+ origin/develop

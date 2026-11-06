@@ -4,6 +4,17 @@ from django.db import models
 from .managers import ParentLinkManager, StudentManager
 
 
+# Grouped choices for Student.grade_level. Stored as integers so ordering and
+# range comparisons keep working; College has no single grade, so it uses 13.
+GRADE_COLLEGE = 13
+
+GRADE_LEVEL_CHOICES = [
+    ("Grade 1-10", [(n, f"Grade {n}") for n in range(1, 11)]),
+    ("Senior High", [(11, "Grade 11"), (12, "Grade 12")]),
+    ("College", [(GRADE_COLLEGE, "College")]),
+]
+
+
 class User(AbstractUser):
     """Custom user with a role. Every account in Gabay has exactly one role."""
 
@@ -25,7 +36,7 @@ class Student(models.Model):
     lrn = models.CharField("LRN", max_length=12, unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    grade_level = models.PositiveSmallIntegerField()
+    grade_level = models.PositiveSmallIntegerField(choices=GRADE_LEVEL_CHOICES)
     section = models.CharField(max_length=50)
     # Optional: the student's own login account (for the student goal-setting view)
     user = models.OneToOneField(

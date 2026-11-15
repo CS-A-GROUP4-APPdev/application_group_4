@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Parent Portal · Gabay{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Parent Portal</h1>
+
+{% if waiting_links %}
+  <div class="notice mb-3" role="status">
+    <b>{{ waiting_links }} link{{ waiting_links|pluralize }} waiting for consent.</b>
+    You will see that child's records after the school records your consent.
+  </div>
+{% endif %}
+
+{% for child in children %}
+  <section class="panel mb-3">
+    <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+      <div>
+        <h2 class="mb-0">{{ child.full_name }}</h2>
+        <p class="text-muted mb-0">{{ child.get_grade_level_display }}, Section {{ child.section }}</p>
+      </div>
+      <div class="d-flex gap-4">
+        <div><div class="stat-value text-absent">{{ child.absences }}</div><div class="stat-label">Absences</div></div>
+        <div><div class="stat-value text-late">{{ child.lates }}</div><div class="stat-label">Lates</div></div>
+      </div>
+      <div><a class="btn btn-primary" href="{% url 'parent_portal:student_detail' child.pk %}">View grades and attendance</a></div>
+    </div>
+  </section>
+{% empty %}
+  <div class="panel">
+    <p class="mb-0">No students are linked to your account yet. Ask your adviser or the school office to link your child.</p>
+  </div>
+{% endfor %}
+{% endblock %}

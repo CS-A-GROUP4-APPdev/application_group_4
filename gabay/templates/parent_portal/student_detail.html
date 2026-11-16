@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ student.full_name }} · Gabay{% endblock %}
+{% block content %}
+<h1 class="h3 mb-0">{{ student.full_name }}</h1>
+<p class="text-muted">{{ student.get_grade_level_display }}, Section {{ student.section }}</p>
+
+<div class="row g-3">
+  <div class="col-lg-7"><section class="panel h-100">
+    <h2>Grades</h2>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead><tr><th scope="col">Subject</th><th scope="col">Quarter</th><th scope="col">Item</th><th scope="col" class="text-end">Score</th></tr></thead>
+        <tbody>
+          {% for g in grades %}
+            <tr>
+              <th scope="row" class="fw-normal">{{ g.subject.name }}</th><td>Q{{ g.quarter }}</td>
+              <td>{{ g.title|default:g.get_component_display }}</td>
+              <td class="text-end">{{ g.score }} / {{ g.highest_possible_score }} ({{ g.percentage }}%)</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="4" class="text-muted">No grades have been recorded yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section></div>
+
+  <div class="col-lg-5"><section class="panel h-100">
+    <h2>Recent attendance</h2>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead><tr><th scope="col">Date</th><th scope="col">Period</th><th scope="col">Subject</th><th scope="col">Status</th></tr></thead>
+        <tbody>
+          {% for a in attendance %}
+            <tr>
+              <td>{{ a.date|date:"M j" }}</td><td>{{ a.period }}</td><td>{{ a.subject.name }}</td>
+              <td{% if a.status == 'absent' %} class="text-absent"{% elif a.status == 'late' %} class="text-late"{% endif %}>{{ a.get_status_display }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="4" class="text-muted">No attendance has been recorded yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section></div>
+</div>
+{% endblock %}

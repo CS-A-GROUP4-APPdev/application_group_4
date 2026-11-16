@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}School overview · Gabay{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">School overview</h1>
+<div class="row g-3">
+  <div class="col-lg-6"><section class="panel h-100">
+    <h2>Students by grade level</h2>
+    <table class="table mb-0">
+      <thead><tr><th scope="col">Grade</th><th scope="col" class="text-end">Students</th></tr></thead>
+      <tbody>
+        {% for row in by_grade %}
+          <tr><td>Grade {{ row.grade_level }}</td><td class="text-end">{{ row.total }}</td></tr>
+        {% empty %}
+          <tr><td colspan="2" class="text-muted">No students yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section></div>
+  <div class="col-lg-6"><section class="panel h-100">
+    <h2>Parent consent</h2>
+    <p class="mb-1"><span class="stat-value">{{ with_consent }}</span> <span class="stat-label">links with consent</span></p>
+    <p class="mb-0"><span class="stat-value">{{ no_consent }}</span> <span class="stat-label">links waiting for consent</span></p>
+  </section></div>
+</div>
+<p class="mt-3"><a href="{% url 'report:dashboard' %}">Back to the Staff Dashboard</a></p>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Access denied · Gabay{% endblock %}
+{% block content %}
+<div class="mx-auto text-center" style="max-width: 520px;">
+  <p class="stat-value mb-2">403</p>
+  <h1 class="h3 fw-bold">You cannot open this page</h1>
+  <p class="text-muted">Your account does not have access to this page. If you think this is a mistake, ask your adviser or the school office.</p>
+  {% if home_url %}
+    <a class="btn btn-primary" href="{{ home_url }}">Go to my page</a>
+  {% else %}
+    <a class="btn btn-primary" href="{% url 'auth:login' %}">Log in</a>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Staff Dashboard · Gabay{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Staff Dashboard</h1>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-lg-3"><div class="panel h-100">
+    <div class="stat-label">Students</div><div class="stat-value">{{ student_count }}</div>
+  </div></div>
+  <div class="col-6 col-lg-3"><div class="panel h-100">
+    <div class="stat-label">Absent today</div><div class="stat-value">{{ absent_today }}</div>
+  </div></div>
+  {% if user.role == 'principal' or user.role == 'admin' or user.is_superuser %}
+  <div class="col-12 col-lg-6"><div class="panel h-100">
+    <div class="stat-label">For principal and admin</div>
+    <a class="fw-bold" href="{% url 'report:overview' %}">School overview and consent status</a>
+  </div></div>
+  {% endif %}
+</div>
+
+<section class="panel">
+  <h2>Students</h2>
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead><tr><th scope="col">LRN</th><th scope="col">Name</th><th scope="col">Grade</th><th scope="col">Section</th><th scope="col"></th></tr></thead>
+      <tbody>
+        {% for s in students %}
+          <tr>
+            <td>{{ s.lrn }}</td><td>{{ s.last_name }}, {{ s.first_name }}</td>
+            <td>{{ s.get_grade_level_display }}</td><td>{{ s.section }}</td>
+            <td class="text-end"><a href="{% url 'parent_portal:student_detail' s.pk %}">Open</a></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="text-muted">No students yet. Add them in the admin site.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
